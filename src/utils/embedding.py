@@ -1,11 +1,10 @@
 import os
 import requests
-from typing import List
 from dotenv import load_dotenv
 
 load_dotenv()
 
-def embedd(query_list:List[str]):
+def embedd(query:str):
     model_id = os.getenv("MODEL_ID")
     hf_token = os.getenv("HF_API_KEY")
     hf_url = os.getenv("API_URL").format(MODEL_ID=model_id)
@@ -18,7 +17,7 @@ def embedd(query_list:List[str]):
 
     #hugging face format to send query
     payload = {
-        "inputs": query_list
+        "inputs": query
         # "options": {"wait_for_model": True}
     }
 
