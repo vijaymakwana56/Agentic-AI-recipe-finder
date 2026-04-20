@@ -49,6 +49,7 @@ rag_instance = RagTool()
 def rag_search_recipe(query:str):
     """
     Searches the RAG database for specific cooking recipes based on a text query.
+    consult this database for stored recipes
     """
     #consult this database for stored recipes
     return rag_instance.rag_search(query=query)

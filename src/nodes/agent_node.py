@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 from src.tools.rag_search import rag_search_recipe
 from src.tools.web_search import web_search_tool
 from src.state_graph import RecipeState
-from langchain.messages import SystemMessage
+from langchain.messages import SystemMessage, AIMessage
+from langgraph.prebuilt import ToolNode
 
 #loading the variables
 load_dotenv()
@@ -13,8 +14,10 @@ groq_api_key = os.getenv('GROQ_API_KEY')
 
 recipe_tools = [rag_search_recipe, web_search_tool]
 
+tool_node = ToolNode(recipe_tools)
+
 #initialize the groq llm
-llm = ChatGroq(model=groq_model, temperature=0.5, verbose=True).bind_tools(tools=recipe_tools)
+llm = ChatGroq(model=groq_model, temperature=0, verbose=True).bind_tools(tools=recipe_tools)
 
 def agent(state:RecipeState):
     # 1. Define the Persona/System Instructions
@@ -33,7 +36,7 @@ def agent(state:RecipeState):
         response = llm.invoke(input=inputs)
 
         return {
-            'message': [response],
+            'messages': [response],
             'query': state.get('query') #to ensure that the state query persists
         }
 
