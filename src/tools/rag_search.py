@@ -1,4 +1,5 @@
 import os
+from langchain_core.tools import tool
 from qdrant_client import QdrantClient
 from src.utils.embedding import embedd
 from dotenv import load_dotenv
@@ -13,7 +14,8 @@ class RagTool:
         self.qd_url = os.getenv('QD_URL')
         self.client = QdrantClient(
             url=self.qd_url,
-            api_key=self.qd_api_key
+            api_key=self.qd_api_key,
+            check_compatibility=False
         )
 
     def rag_search(self,query:str)->str:
@@ -38,3 +40,15 @@ class RagTool:
 
         except Exception as e:
             print(e)
+
+#initialize the rag class to create a persistant connection to the database
+rag_instance = RagTool()
+
+
+@tool
+def rag_search_recipe(query:str):
+    """
+    Searches the RAG database for specific cooking recipes based on a text query.
+    """
+    #consult this database for stored recipes
+    return rag_instance.rag_search(query=query)

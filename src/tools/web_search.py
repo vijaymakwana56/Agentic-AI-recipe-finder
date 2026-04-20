@@ -1,11 +1,15 @@
 import os
+from langchain_core.tools import tool
 from langchain_tavily import TavilySearch
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
+@tool
 def web_search_tool(query:str):
+    """
+    Searches the websites for specific cooking recipes based on a text query.
+    """
     # web search using tavily to get top 2 best results from the results.
     try:
         #initialize the searchtool

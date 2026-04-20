@@ -1,6 +1,7 @@
 langchain
 langchain-community
 langchain-tavily
+langchain_groq
 langgraph
 fastapi
 qdrant-client
